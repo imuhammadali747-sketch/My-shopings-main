@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaxshi Niyat Stroy House</title>
+    <link rel="stylesheet" href="../nav.css">
+    <link rel="stylesheet" href="./mahsulotlar.css">
+    <link rel="shortcut icon" href="../kerakli dokument/logo.png" type="image/x-icon">
+    <script src="../menu.js" defer></script>
+</head>
+
+<body>
+    <header>
+
+        <nav>
+
+            <img src="../kerakli dokument/logo.png" alt="Bu yerda Logo rasmi bor xatolik bor tekshirib ko'ring">
+
+            <h1>Yaxshi Niyat</h1>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-menu" id="navMenu">
+                <li>
+                    <a href="../index.html">Bosh sahifa</a>
+                </li>
+
+                <li>
+                    <a href="./mahsulotlar.html">Mahsulotlar</a>
+                </li>
+
+                <li>
+                    <a href="../Xizmatlar/xizmatlar.html">Xizmatlar</a>
+                </li>
+
+                <li>
+                    <a href="../Biz haqimizda/bizhaqimizda.html">Biz haqimizda</a>
+                </li>
+
+
+                <li class="boglanishlar">
+                    <a href="../Bog'lanish/bog'lanish.html">Bog'lanish</a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </header>
+
+
+    <section class="products">
+        <h2>Bizning Mahsulotlar</h2>
+        <p class="sub">Yuqori sifatli qurilish materiallarini eng yaxshi narxlarda</p>
+
+        <div class="search-box">
+            <span class="search-icon">🔎</span>
+            <input type="text" id="productSearch" placeholder="Mahsulot yoki kategoriya bo‘yicha qidiring...">
+        </div>
+
+        <div class="product-grid">
+
+            <div class="product-card">
+                <img src="https://api.cabinet.smart-market.uz/uploads/images/ff808181e54e992006049b1c" alt="">
+                <div class="p-info">
+                    <span class="cat">Qurilish materiallar</span>
+                    <h3>Sement M-400</h3>
+                    <div class="price">45,000 so'm <small>/qop</small></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://avatars.mds.yandex.net/get-altay/402558/2a00000185e7581ed184885525b75e43e89c/orig"
+                    alt="">
+                <div class="p-info">
+                    <span class="cat">Devor materiallari</span>
+                    <h3>G'isht</h3>
+                    <div class="price">850 so'm <small>/dona</small></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://imgp24.ru/i/u_items/thumbs/16504481445321224_384.jpg" alt="">
+                <div class="badge">Yangi</div>
+                <div class="p-info">
+                    <span class="cat">Tom yopish</span>
+                    <h3>Tunka</h3>
+                    <div class="price">35,000 so'm <small>/metr</small></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://frankfurt.apollo.olxcdn.com/v1/files/6humw1p7mvdv2-UZ/image" alt="">
+                <div class="badge">Yangi</div>
+                <div class="p-info">
+                    <span class="cat">Pardozlash</span>
+                    <h3>Bo'yoq Mahsulotlar</h3>
+                    <div class="price">85,000 so'm <small>/dona</small></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('productSearch');
+            const cards = Array.from(document.querySelectorAll('.product-card'));
+
+            if (!searchInput) return;
+
+            const normalizeText = function (value) {
+                return value
+                    .toLowerCase()
+                    .normalize('NFKD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[ʼ’]/g, "'")
+                    .replace(/[^a-z0-9]/g, '')
+                    .replace(/j/g, 'j')
+                    .replace(/q/g, 'q')
+                    .replace(/o/g, 'o')
+                    .replace(/g/g, 'g')
+                    .replace(/sh/g, 'sh')
+                    .replace(/ch/g, 'ch');
+            };
+
+            const section = searchInput.closest('.products');
+            const noResults = document.createElement('div');
+            noResults.className = 'no-results';
+            noResults.textContent = 'Hech qanday mahsulot topilmadi.';
+            section.appendChild(noResults);
+
+            searchInput.addEventListener('input', function () {
+                const query = normalizeText(this.value.trim());
+                let visibleCount = 0;
+
+                cards.forEach(function (card) {
+                    const text = normalizeText(card.textContent);
+                    const isMatch = text.includes(query);
+                    card.style.display = isMatch ? '' : 'none';
+                    if (isMatch) visibleCount++;
+                });
+
+                noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+            });
+        });
+    </script>
+
+</body>
+
+</html>

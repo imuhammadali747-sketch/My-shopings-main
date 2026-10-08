@@ -1,0 +1,227 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f6f7;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.subtitle {
+    text-align: center;
+    margin-bottom: 40px;
+    color: gray;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    gap: 30px;
+}
+
+/* Chap qism */
+.left {
+    width: 35%;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(255, 77, 0, 0.15);
+    transform: translateY(-5px);
+    border-left: 4px solid #ff4d00;
+}
+
+/* O'ng qism */
+.right {
+    width: 65%;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+}
+
+.right:hover {
+    box-shadow: 0 10px 25px rgba(255, 77, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+.right h2 {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #1a3a52;
+    transition: color 0.3s ease;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ff4d00;
+    box-shadow: 0 0 12px rgba(255, 77, 0, 0.25);
+    background: linear-gradient(135deg, rgba(255, 77, 0, 0.02) 0%, rgba(255, 77, 0, 0.01) 100%);
+}
+
+textarea {
+    height: 90px;
+    resize: vertical;
+}
+
+button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #ff4d00 0%, #ff6e2d 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 77, 0, 0.3);
+}
+
+button:hover {
+    background: linear-gradient(135deg, #ff6e2d 0%, #ff8a42 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 77, 0, 0.5);
+}
+
+.matn {
+    padding: 10px;
+}
+
+.qisqartma {
+    height: 115px;
+}
+
+
+.boglanishlar {
+    border-radius: 10px;
+    border: 15px solid #f54900;
+    background: #f54900;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.boglanishlar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* MEDIA QUERIES - RESPONSIVE DESIGN */
+
+/* TABLET (768px da pastda) */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .left,
+    .right {
+        width: 100%;
+    }
+
+    h1 {
+        margin-top: 20px;
+        font-size: 28px;
+    }
+}
+
+/* MOBILE (480px da pastda) */
+@media (max-width: 480px) {
+    h1 {
+        margin-top: 15px;
+        font-size: 20px;
+    }
+
+    .subtitle {
+        margin-bottom: 20px;
+        font-size: 12px;
+    }
+
+    .container {
+        width: 95%;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .left,
+    .right {
+        width: 100%;
+    }
+
+    .card,
+    .right {
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .right h2 {
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    form label {
+        margin-top: 10px;
+        margin-bottom: 4px;
+        font-size: 13px;
+    }
+
+    input,
+    textarea {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    textarea {
+        height: 70px;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .matn {
+        padding: 8px;
+    }
+}

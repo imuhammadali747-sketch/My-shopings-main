@@ -1,0 +1,209 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.products {
+    padding: 80px 60px;
+    background: #fff;
+    text-align: center;
+}
+
+.products h2 {
+    font-size: 42px;
+    color: #0f172a;
+}
+
+.sub {
+    margin: 10px 0 30px;
+    color: #475569;
+}
+
+.search-box {
+    max-width: 620px;
+    margin: 0 auto 34px;
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #ff4d00;
+    pointer-events: none;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 15px 20px 15px 48px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    font-size: 15px;
+    outline: none;
+    background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+    transition: all 0.3s ease;
+}
+
+.search-box input::placeholder {
+    color: #94a3b8;
+}
+
+.search-box input:focus {
+    border-color: #ff4d00;
+    box-shadow: 0 0 0 4px rgba(255, 77, 0, 0.12), 0 10px 30px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+}
+
+.no-results {
+    display: none;
+    max-width: 520px;
+    margin: 12px auto 0;
+    padding: 12px 16px;
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px dashed #fdba74;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+    position: relative;
+    text-align: left;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.product-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.1);
+}
+
+.p-info {
+    padding: 18px;
+}
+
+.cat {
+    color: #ff4d00;
+    font-size: 14px;
+}
+
+.product-card h3 {
+    margin: 6px 0;
+    color: #0f172a;
+}
+
+
+.price {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.price small {
+    color: #64748b;
+    font-weight: normal;
+}
+
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ff4d00;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+/* MEDIA QUERIES - RESPONSIVE DESIGN */
+
+/* TABLET (768px da pastda) */
+@media (max-width: 768px) {
+    .products {
+        padding: 40px 30px;
+    }
+
+    .products h2 {
+        font-size: 32px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* MOBILE (480px da pastda) */
+@media (max-width: 480px) {
+    .products {
+        padding: 20px 15px;
+    }
+
+    .products h2 {
+        font-size: 24px;
+    }
+
+    .sub {
+        margin: 10px 0 24px;
+        font-size: 14px;
+    }
+
+    .search-box {
+        margin-bottom: 24px;
+    }
+
+    .search-box input {
+        padding: 13px 16px 13px 44px;
+        font-size: 14px;
+    }
+
+    .search-icon {
+        left: 14px;
+        font-size: 16px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .product-card img {
+        height: 180px;
+    }
+
+    .p-info {
+        padding: 15px;
+    }
+
+    .product-card h3 {
+        font-size: 14px;
+    }
+
+    .price {
+        font-size: 16px;
+    }
+}

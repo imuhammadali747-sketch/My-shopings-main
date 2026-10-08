@@ -1,0 +1,29 @@
+{
+  "name": "my-shoping",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000M\u0000y\u0000-\u0000s\u0000h\u0000o\u0000p\u0000\r\u0000 \u0000#\u0000 \u0000M\u0000y\u0000-\u0000s\u0000h\u0000o\u0000p\u0000\r\u0000 \u0000",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imuhammadali747-sketch/My-shopings.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/imuhammadali747-sketch/My-shopings/issues"
+  },
+  "homepage": "https://github.com/imuhammadali747-sketch/My-shopings#readme",
+  "dependencies": {
+    "axios": "^1.15.2",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "node-telegram-bot-api": "^0.67.0",
+    "nodemailer": "^8.0.5"
+  }
+}
