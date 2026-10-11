@@ -112,32 +112,133 @@ header nav img {
 }
 
 .right {
-    width: 40%;
+    width: 46%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.three-viewport {
+.visual-card {
     position: relative;
-    width: min(520px, 100%);
-    height: 430px;
-    border-radius: 28px;
-    background: radial-gradient(circle at top, rgba(123, 202, 255, 0.28), rgba(255, 255, 255, 0.6) 38%, rgba(255, 255, 255, 0.2) 100%);
-    box-shadow: 0 25px 60px rgba(31, 64, 112, 0.16);
-    overflow: hidden;
-    border: 1px solid rgba(17, 51, 90, 0.08);
+    width: min(760px, 100%);
+    height: 420px;
+    perspective: 1600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#three-canvas {
+.visual-inner {
+    position: relative;
     width: 100%;
     height: 100%;
-    display: block;
-    cursor: grab;
+    border-radius: 30px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(218,231,244,0.6));
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(255,255,255,0.5);
+    transform-style: preserve-3d;
+    animation: floatingCard 6s ease-in-out infinite alternate;
 }
 
-#three-canvas:active {
-    cursor: grabbing;
+.visual-inner::before {
+    content: "";
+    position: absolute;
+    inset: 16px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.08);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.visual-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.1) contrast(1.05);
+    transform: scale(1.02) rotateX(0deg) rotateY(0deg);
+    transition: transform 0.8s ease;
+    animation: imageMotion 10s ease-in-out infinite alternate;
+}
+
+.visual-inner:hover img {
+    transform: scale(1.06) rotateX(4deg) rotateY(-4deg);
+}
+
+.scan {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 18%;
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(150,205,255,0.38), rgba(255,255,255,0));
+    filter: blur(12px);
+    opacity: 0.8;
+    z-index: 3;
+    animation: scanSlide 5s ease-in-out infinite;
+}
+
+.scan-left {
+    left: -20%;
+}
+
+.scan-right {
+    right: -20%;
+    animation-delay: 2.5s;
+}
+
+.glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(138, 188, 255, 0.15), transparent 45%);
+    z-index: 2;
+    animation: glowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatingCard {
+    0% {
+        transform: rotateX(8deg) rotateY(-10deg) translateY(6px);
+    }
+    100% {
+        transform: rotateX(-6deg) rotateY(8deg) translateY(-8px);
+    }
+}
+
+@keyframes imageMotion {
+    0% {
+        transform: scale(1.02) translateX(-2px);
+    }
+    100% {
+        transform: scale(1.08) translateX(4px);
+    }
+}
+
+@keyframes scanSlide {
+    0% {
+        transform: translateX(-18%);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.9;
+    }
+    50% {
+        transform: translateX(120%);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(150%);
+        opacity: 0;
+    }
+}
+
+@keyframes glowPulse {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0.9;
+    }
 }
 
 /* MEDIA QUERIES - RESPONSIVE DESIGN */
