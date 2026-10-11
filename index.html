@@ -67,14 +67,42 @@
 
         <div class="right">
             <div class="visual-card">
-                <div class="visual-inner">
-                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80" alt="Qurilish mahsuloti">
+                <div class="visual-inner" id="product-view">
+                    <img src="./kerakli dokument/ctroitelno-montazhnye-raboty.jpg" alt="Qurilish ishlari va qurilish mahsulotlari">
                     <div class="scan scan-left"></div>
                     <div class="scan scan-right"></div>
                     <div class="glow"></div>
                 </div>
+                <div class="visual-controls">
+                    <label class="rotation-control" for="rotation-slider">
+                        <span>3D ko‘rinish</span>
+                        <input id="rotation-slider" type="range" min="-35" max="35" value="0" aria-label="Rasmni chapga yoki o‘ngga aylantirish">
+                    </label>
+                    <label class="auto-control" for="auto-rotate">
+                        <span>Avtomatik</span>
+                        <input id="auto-rotate" type="checkbox" checked>
+                        <span class="toggle" aria-hidden="true"></span>
+                    </label>
+                </div>
             </div>
         </div>
     </section>
+
+    <script>
+        const productView = document.getElementById('product-view');
+        const rotationSlider = document.getElementById('rotation-slider');
+        const autoRotate = document.getElementById('auto-rotate');
+        const visualCard = document.querySelector('.visual-card');
+
+        function updateRotation() {
+            visualCard.classList.toggle('is-auto', autoRotate.checked);
+            rotationSlider.disabled = autoRotate.checked;
+            productView.style.setProperty('--rotation', `${rotationSlider.value}deg`);
+        }
+
+        rotationSlider.addEventListener('input', updateRotation);
+        autoRotate.addEventListener('change', updateRotation);
+        updateRotation();
+    </script>
 </body>
 </html>

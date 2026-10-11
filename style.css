@@ -121,24 +121,27 @@ header nav img {
 .visual-card {
     position: relative;
     width: min(760px, 100%);
-    height: 420px;
+    padding-bottom: 76px;
     perspective: 1600px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .visual-inner {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 420px;
     border-radius: 30px;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(218,231,244,0.6));
     box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
     border: 1px solid rgba(255,255,255,0.5);
     transform-style: preserve-3d;
-    animation: floatingCard 6s ease-in-out infinite alternate;
+    transform: rotateX(3deg) rotateY(var(--rotation, 0deg));
+    transition: transform 0.25s ease;
+    will-change: transform;
+}
+
+.visual-card.is-auto .visual-inner {
+    animation: autoRotate 6s ease-in-out infinite alternate;
 }
 
 .visual-inner::before {
@@ -165,6 +168,96 @@ header nav img {
 
 .visual-inner:hover img {
     transform: scale(1.06) rotateX(4deg) rotateY(-4deg);
+}
+
+.visual-controls {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 20px;
+    border: 1px solid rgba(17, 51, 90, 0.1);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+}
+
+.rotation-control {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 14px;
+    color: #1a3a52;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rotation-control input {
+    flex: 1;
+    min-width: 80px;
+    accent-color: #ff4d00;
+    cursor: pointer;
+}
+
+.rotation-control input:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.auto-control {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 10px;
+    color: #1a3a52;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.auto-control input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.toggle {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    border-radius: 999px;
+    background: #b8c2cf;
+    transition: background 0.2s ease;
+}
+
+.toggle::after {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    content: "";
+    transition: transform 0.2s ease;
+}
+
+.auto-control input:checked + .toggle {
+    background: #ff4d00;
+}
+
+.auto-control input:checked + .toggle::after {
+    transform: translateX(18px);
+}
+
+.auto-control input:focus-visible + .toggle {
+    outline: 3px solid rgba(37, 86, 166, 0.35);
+    outline-offset: 3px;
 }
 
 .scan {
@@ -196,12 +289,12 @@ header nav img {
     animation: glowPulse 4s ease-in-out infinite alternate;
 }
 
-@keyframes floatingCard {
-    0% {
-        transform: rotateX(8deg) rotateY(-10deg) translateY(6px);
+@keyframes autoRotate {
+    from {
+        transform: rotateX(3deg) rotateY(-18deg) translateY(3px);
     }
-    100% {
-        transform: rotateX(-6deg) rotateY(8deg) translateY(-8px);
+    to {
+        transform: rotateX(3deg) rotateY(18deg) translateY(-3px);
     }
 }
 
@@ -267,6 +360,14 @@ header nav img {
     .stats {
         gap: 30px;
     }
+
+    .visual-card {
+        width: min(560px, 100%);
+    }
+
+    .visual-inner {
+        height: 360px;
+    }
 }
 
 /* MOBILE (480px da pastda) */
@@ -309,6 +410,32 @@ header nav img {
     }
 
     .stats span {
+        font-size: 12px;
+    }
+
+    .visual-card {
+        padding-bottom: 86px;
+    }
+
+    .visual-inner {
+        height: 280px;
+        border-radius: 22px;
+    }
+
+    .visual-controls {
+        gap: 12px;
+        padding: 14px 12px;
+    }
+
+    .rotation-control {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        font-size: 12px;
+    }
+
+    .auto-control {
+        gap: 6px;
         font-size: 12px;
     }
 }
