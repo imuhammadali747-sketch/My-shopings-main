@@ -12,6 +12,28 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname));
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    const allowedOrigins = new Set([
+        'http://localhost:5500',
+        'http://127.0.0.1:5500',
+        'http://localhost:5501',
+        'http://127.0.0.1:5501'
+    ]);
+
+    if (origin && allowedOrigins.has(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Vary', 'Origin');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    }
+
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+
+    next();
+});
 
 // Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -62,6 +84,10 @@ app.post('/contact', async (req, res) => {
     const { name, phone, message } = req.body;
 
     try {
+        if (![name, phone, message].every(value => typeof value === 'string' && value.trim())) {
+            return res.status(400).json({ success: false, message: 'Ism, telefon va xabarni to‘liq kiriting.' });
+        }
+
         const fullMessage = `Yangi xabar:\nIsm: ${name}\nTelefon: ${phone}\nXabar: ${message}`;
 
         console.log('Yangi xabar qabul qilindi:');
@@ -86,37 +112,50 @@ app.post('/contact', async (req, res) => {
 
         let telegramSent = false;
         const telegramTargets = [
-            process.env.TELEGRAM_CHANNEL_ID,
-            process.env.TELEGRAM_CHAT_ID,
-            process.env.TELEGRAM_GROUP_ID
-        ].map(target => {
-            if (typeof target !== 'string') {
+            { destination: 'channel', value: process.env.TELEGRAM_CHANNEL_ID },
+            { destination: 'chat', value: process.env.TELEGRAM_CHAT_ID },
+            { destination: 'group', value: process.env.TELEGRAM_GROUP_ID }
+        ].map(({ destination, value }) => {
+            if (typeof value !== 'string') {
                 return null;
             }
 
-            const value = target.trim();
-            if (!value) {
+            const normalizedTarget = value.trim();
+            if (!normalizedTarget) {
                 return null;
             }
 
-            if (/^-?\d+$/.test(value)) {
-                return value;
+            if (/^-?\d+$/.test(normalizedTarget)) {
+                return { destination, target: normalizedTarget };
             }
 
-            return value.startsWith('@') ? value : `@${value}`;
+            return { destination, target: normalizedTarget.startsWith('@') ? normalizedTarget : `@${normalizedTarget}` };
         }).filter(Boolean);
 
+        const telegramResults = [];
         if (bot && telegramTargets.length > 0) {
-            try {
-                for (const target of telegramTargets) {
-                    await bot.sendMessage(target, fullMessage);
+            const uniqueTargets = new Map();
+            for (const entry of telegramTargets) {
+                const existing = uniqueTargets.get(entry.target);
+                if (existing) {
+                    existing.destinations.push(entry.destination);
+                } else {
+                    uniqueTargets.set(entry.target, { target: entry.target, destinations: [entry.destination] });
                 }
-                telegramSent = true;
-                console.log(`Telegram sent to ${telegramTargets.join(', ')}`);
-            } catch (telegramError) {
-                console.log('Telegram yuborilmadi:', telegramError.message);
+            }
+
+            for (const { target, destinations } of uniqueTargets.values()) {
+                try {
+                    await bot.sendMessage(target, fullMessage);
+                    destinations.forEach(destination => telegramResults.push({ destination, sent: true }));
+                    console.log(`Telegram sent to ${target}`);
+                } catch (telegramError) {
+                    destinations.forEach(destination => telegramResults.push({ destination, sent: false }));
+                    console.error(`Telegram yuborilmadi (${target}):`, telegramError.message);
+                }
             }
         }
+        telegramSent = telegramResults.some(result => result.sent);
 
         let smsSent = false;
         const smsTarget = process.env.PHONE_NUMBER || phone;
@@ -128,6 +167,9 @@ app.post('/contact', async (req, res) => {
             message: 'Xabar qabul qilindi!',
             emailSent,
             telegramSent,
+            telegramAvailable: Boolean(bot),
+            telegramResults,
+            telegramConfigured: telegramTargets.map(({ destination }) => destination),
             smsSent
         });
 

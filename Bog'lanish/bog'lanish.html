@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../nav.css">
     <link rel="stylesheet" href="./bog'lanish.css">
     <link rel="shortcut icon" href="../kerakli dokument/logo.png" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
     <script src="./boglanish.js" defer></script>
 </head>
 
@@ -97,12 +96,12 @@
         <div class="right">
             <h2>Xabar Yuborish</h2>
 
-            <form>
-                <label>Ismingiz</label>
-                <input type="text" name="name" placeholder="Ismingizni kiriting" required>
+            <form id="contact-form">
+                <label for="contact-name">Ismingiz</label>
+                <input id="contact-name" type="text" name="name" placeholder="Ismingizni kiriting" required>
 
-                <label>Telefon raqamingiz</label>
-                <input type="tel" name="phone" list="phoneList" placeholder="+998 90 123 45 67" required>
+                <label for="contact-phone">Telefon raqamingiz</label>
+                <input id="contact-phone" type="tel" name="phone" list="phoneList" placeholder="+998 90 123 45 67" required>
                 <!-- agar kerak bolsa  -->
                 <!-- <datalist id="phoneList">
                     <option value="+998 90 ">
@@ -113,10 +112,11 @@
                     <option value="+998 20 ">
                 </datalist> -->
 
-                <label>Xabaringiz</label>
-                <textarea name="message" placeholder="Xabaringizni yozing..." required></textarea>
+                <label for="contact-message">Xabaringiz</label>
+                <textarea id="contact-message" name="message" placeholder="Xabaringizni yozing..." required></textarea>
 
                 <button type="submit">Xabar Yuborish</button>
+                <p id="form-status" role="status" aria-live="polite"></p>
             </form>
         </div>
 

@@ -80,7 +80,15 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        const { name, phone, message } = JSON.parse(event.body);
+        const { name, phone, message } = JSON.parse(event.body || '{}');
+
+        if (![name, phone, message].every(value => typeof value === 'string' && value.trim())) {
+            return {
+                statusCode: 400,
+                headers: { 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ success: false, message: 'Ism, telefon va xabarni to‘liq kiriting.' })
+            };
+        }
 
         const fullMessage = `Yangi xabar:\nIsm: ${name}\nTelefon: ${phone}\nXabar: ${message}`;
 
@@ -106,37 +114,50 @@ exports.handler = async (event, context) => {
 
         let telegramSent = false;
         const telegramTargets = [
-            telegramChannelId,
-            telegramChatId,
-            telegramGroupId
-        ].map(target => {
-            if (typeof target !== 'string') {
+            { destination: 'channel', value: telegramChannelId },
+            { destination: 'chat', value: telegramChatId },
+            { destination: 'group', value: telegramGroupId }
+        ].map(({ destination, value }) => {
+            if (typeof value !== 'string') {
                 return null;
             }
 
-            const value = target.trim();
-            if (!value) {
+            const normalizedTarget = value.trim();
+            if (!normalizedTarget) {
                 return null;
             }
 
-            if (/^-?\d+$/.test(value)) {
-                return value;
+            if (/^-?\d+$/.test(normalizedTarget)) {
+                return { destination, target: normalizedTarget };
             }
 
-            return value.startsWith('@') ? value : `@${value}`;
+            return { destination, target: normalizedTarget.startsWith('@') ? normalizedTarget : `@${normalizedTarget}` };
         }).filter(Boolean);
 
+        const telegramResults = [];
         if (bot && telegramTargets.length > 0) {
-            try {
-                for (const target of telegramTargets) {
-                    await bot.sendMessage(target, fullMessage);
+            const uniqueTargets = new Map();
+            for (const entry of telegramTargets) {
+                const existing = uniqueTargets.get(entry.target);
+                if (existing) {
+                    existing.destinations.push(entry.destination);
+                } else {
+                    uniqueTargets.set(entry.target, { target: entry.target, destinations: [entry.destination] });
                 }
-                telegramSent = true;
-                console.log(`Telegram sent to ${telegramTargets.join(', ')}`);
-            } catch (telegramError) {
-                console.log('Telegram yuborilmadi:', telegramError.message);
+            }
+
+            for (const { target, destinations } of uniqueTargets.values()) {
+                try {
+                    await bot.sendMessage(target, fullMessage);
+                    destinations.forEach(destination => telegramResults.push({ destination, sent: true }));
+                    console.log(`Telegram sent to ${target}`);
+                } catch (telegramError) {
+                    destinations.forEach(destination => telegramResults.push({ destination, sent: false }));
+                    console.error(`Telegram yuborilmadi (${target}):`, telegramError.message);
+                }
             }
         }
+        telegramSent = telegramResults.some(result => result.sent);
 
         let smsSent = false;
         const smsTarget = phoneNumber || phone;
@@ -151,6 +172,9 @@ exports.handler = async (event, context) => {
                 message: 'Xabar qabul qilindi!',
                 emailSent,
                 telegramSent,
+                telegramAvailable: Boolean(bot),
+                telegramResults,
+                telegramConfigured: telegramTargets.map(({ destination }) => destination),
                 smsSent
             })
         };
